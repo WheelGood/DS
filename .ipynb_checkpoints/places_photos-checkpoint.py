@@ -1,10 +1,10 @@
 import requests
 
-def get_place_ids(lat=47.602150, lon=-122.325971, radius='3000', kind='store'):
+def get_place_ids(APIkey, lat=47.602150, lon=-122.325971, radius='3000', kind='store'):
     #this function will not work unless you have a global APIkey
     #these defaults will search the seattle area
     #nearby places search only returns one image, we need more than that so theres an intermediary function to run
-    locationbias=f'{radius}@{lat},{lon}'
+    locationbias = f'{radius}@{str(lat)},{str(lon)}'
     url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={APIkey}&location={lat},{lon}&radius={radius}&type={kind}'
     try:
         r = requests.get(url).json()['results']
@@ -15,7 +15,7 @@ def get_place_ids(lat=47.602150, lon=-122.325971, radius='3000', kind='store'):
         pass
     return places
 
-def get_photo_references(places_ids):
+def get_photo_references(APIkey, places_ids):
     #this takes a list of place IDs and uses the details api to get out up to ten pictures of each
     #places_ids is a list of place id's to get places from
     places_references = {}
@@ -31,7 +31,7 @@ def get_photo_references(places_ids):
             pass
     return places_references
 
-def get_photos(places_references):
+def get_photos(APIkey, places_references):
     #this function will not work unless you have a global APIkey
     #places_reference is a dictionary of place_id:[photo_references]
     place_photos = {}
